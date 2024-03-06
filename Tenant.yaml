@@ -1,6 +1,6 @@
 openapi: 3.1.0
 x-stoplight:
-  id: lik9khw1fe6w9
+  id: greknh1b051y4
 info:
   title: Deployment Management Application
   version: '1.0'
@@ -13,6 +13,54 @@ info:
 servers:
   - url: 'http://localhost:3000'
 paths:
+  /api/v1/tenant:
+    post:
+      summary: Create New Tenant
+      operationId: post-tenant
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '400':
+          description: Missing Required Information
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tenant'
+            examples:
+              Create User Bob Fellow:
+                value:
+                  tenantMasterId: 142
+                  companyName: Alice Bags
+                  country: USA
+                  state: CA
+                  city: Los Angeles
+                  subscriptionType: Znode 10x Standred
+                  createdBy: User
+                  createDate: '2024-01-24'
+        description: ''
+      description: Create New Tenant
+      x-stoplight:
+        id: 3u96535cuo0i9
+    parameters: []
+    get:
+      summary: Get all Tenants list
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+        '404':
+          description: Not Found
+      operationId: get-tenants
+      x-stoplight:
+        id: 7n4ev4bnjy2gq
+      description: Get all Tenants list
   '/api/v1/tenant/{tenantId}':
     parameters:
       - schema:
@@ -44,90 +92,45 @@ paths:
         '404':
           description: User Not Found
       operationId: get-tenant
-      description: Retrieve the information of the Tenant with the matching Tenant ID.
+      description: Get Tenant Info by Tenant ID
       x-stoplight:
-        id: ctmynzhlb8arg
+        id: k2ofcb6oclbo1
       x-internal: false
     put:
       summary: Edit Tenant Info by Tenant ID
       tags: []
-      responses: {}
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        2XX:
+          description: Success
       operationId: put-tenant
       x-stoplight:
-        id: l6x8t033py20o
-    delete:
-      summary: Delete Tenant Info by Tenant ID
-      tags: []
-      responses: {}
-      operationId: delete-tenant
-      x-stoplight:
-        id: m4f7fqzuqsfvv
-  /api/v1/tenant:
-    post:
-      summary: Create New Tenant
-      operationId: post-tenant
-      responses:
-        '200':
-          description: User Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Tenant'
-              examples:
-                New User Bob Fellow:
-                  value:
-                    tenantMasterId: 142
-                    companyName: Alice Bags
-                    country: USA
-                    state: CA
-                    city: Los Angeles
-                    subscriptionType: Znode 10x Standred
-                    createdBy: User
-                    createDate: '2024-01-24'
-        '400':
-          description: Missing Required Information
-        '409':
-          description: Email Already Taken
+        id: ufl34xyhcw1to
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                firstName:
-                  type: string
-                lastName:
-                  type: string
-                email:
-                  type: string
-                dateOfBirth:
-                  type: string
-                  format: date
-              required:
-                - firstName
-                - lastName
-                - email
-                - dateOfBirth
-            examples:
-              Create User Bob Fellow:
-                value:
-                  firstName: Bob
-                  lastName: Fellow
-                  email: bob.fellow@gmail.com
-                  dateOfBirth: '1996-08-24'
-        description: Post the necessary fields for the API to create a new user.
-      description: Create a new Tenant.
-      x-stoplight:
-        id: tvexlk77am8rs
-    parameters: []
-    get:
-      summary: Get all Tenants list
+              $ref: '#/components/schemas/Tenant'
+      description: Edit Tenant Info by Tenant ID
+    delete:
+      summary: Delete Tenant Info by Tenant ID
       tags: []
-      responses: {}
-      operationId: get-tenants
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+      operationId: delete-tenant
       x-stoplight:
-        id: xgctcbw6q9ewq
-      description: 'Get all Tenants '
+        id: ept2mv10xkm9y
+      description: Delete Tenant Info by Tenant ID
   '/api/v1/tenant/{tenantId}/resources':
     parameters:
       - schema:
@@ -139,11 +142,19 @@ paths:
       summary: Get all Tenant Resources list by Tenant ID
       tags:
         - Get all Tenant Resources list
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResources'
+        '404':
+          description: Not Found
       operationId: get-tenant-tenantId-resources
       x-stoplight:
-        id: 1pczgc3vdtp01
-      description: Get all Tenant Resources list
+        id: czmftcg35chwl
+      description: Get all Tenant Resources list by Tenant ID
   '/api/v1/tenant/{tenantId}/deployments':
     parameters:
       - schema:
@@ -155,18 +166,38 @@ paths:
       summary: Get all Tenant Deployment list by Tenant ID
       tags:
         - Get all Tenant Deployment list
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantDeployment'
+        '404':
+          description: Not Found
       operationId: get-tenant-tenantId-deployments
       x-stoplight:
-        id: 0oaxelz4tscxr
+        id: cdrgj57m9qpk7
+      description: Get all Tenant Deployment list by Tenant ID
     post:
       summary: Create New Tenant Deployment by Tenant ID
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
       operationId: post-tenant-tenantId-deployments
       x-stoplight:
-        id: m7ocac3tuzbsu
-      description: 'Create New Tenant Deployment '
+        id: jg3d453paef6y
+      description: Create New Tenant Deployment by Tenant ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantDeployment'
   '/api/v1/tenant/{tenantId}/patches':
     parameters:
       - schema:
@@ -178,17 +209,38 @@ paths:
       summary: Get all Tenant Patches list by Tenant ID
       tags:
         - Get all Tenant Patches list
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantPatches'
+        '404':
+          description: Not Found
       operationId: get-tenant-tenantId-patches
       x-stoplight:
-        id: n3h61d953b3z2
+        id: ge9crkd8xua5s
+      description: Get all Tenant Patches list by Tenant ID
     post:
       summary: Create New Tenant Patch by Tenant ID
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
       operationId: post-tenant-tenantId-patches
       x-stoplight:
-        id: 5pp3wfk929vy9
+        id: 1wvnsytryffwa
+      description: Create New Tenant Patch by Tenant ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantPatches'
   '/api/v1/tenant/{tenantId}/users':
     parameters:
       - schema:
@@ -200,18 +252,39 @@ paths:
       summary: Get all Tenant User list  by Tenant ID
       tags:
         - Get all Tenant User list
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantUser'
+        '404':
+          description: Not Found
       operationId: get-tenant-tenantId-users
       x-stoplight:
-        id: h0jrg9nbuvr6e
+        id: wm33wswvsmr7s
+      description: Get all Tenant User list  by Tenant ID
     post:
       summary: Create New Tenant User  by Tenant ID
       tags:
         - Create New Tenant User
-      responses: {}
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
       operationId: post-tenant-tenantId-users
       x-stoplight:
-        id: avezww0c41byn
+        id: lp7hxlecjz0ut
+      description: Create New Tenant User  by Tenant ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantUser'
   '/api/v1/tenant/{tenantId}/users/{userId}':
     parameters:
       - schema:
@@ -228,17 +301,38 @@ paths:
       summary: Edit Tenant User  by Tenant ID and User ID
       tags:
         - Edit Tenant User
-      responses: {}
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
       operationId: put-tenant-tenantId-users-userId
       x-stoplight:
-        id: bpmh9sqxj1ehu
+        id: agg8jrdv6sb8s
+      description: Edit Tenant User  by Tenant ID and User ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantUser'
     delete:
       summary: Delete Tenant User by Tenant ID and User ID
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
       operationId: delete-tenant-tenantId-users-userId
       x-stoplight:
-        id: y54nx3lk3snuk
+        id: zlbm8dtiy4oym
+      description: Delete Tenant User by Tenant ID and User ID
   /api/v1/patch:
     get:
       summary: Get All Patches
@@ -246,14 +340,14 @@ paths:
       responses: {}
       operationId: get-api-v1-patch
       x-stoplight:
-        id: umj2b1ifivtkl
+        id: x0blj7kl7lnz6
     post:
       summary: Create New Patch
       tags: []
       responses: {}
       operationId: post-api-v1-patch
       x-stoplight:
-        id: hfxwv86wteqym
+        id: vbt1gtyz7do67
   '/api/v1/patch/{patchid}':
     parameters:
       - schema:
@@ -267,21 +361,21 @@ paths:
       responses: {}
       operationId: put-api-v1-patch-patchid
       x-stoplight:
-        id: 1dk2zan7zfeqb
+        id: aws6wkbsdewst
     delete:
       summary: Delete Patch by Patch ID
       tags: []
       responses: {}
       operationId: delete-api-v1-patch-patchid
       x-stoplight:
-        id: 601swtvsz5d39
+        id: 0s7ntxn8nx3ul
     get:
       summary: Get Patch details by Patch ID
       tags: []
       responses: {}
       operationId: get-api-v1-patch-patchid
       x-stoplight:
-        id: u0nrymi0757ea
+        id: 5x43bxitouidg
   /api/v1/deployment:
     get:
       summary: Get All Deployment
@@ -289,14 +383,14 @@ paths:
       responses: {}
       operationId: get-api-v1-deployment
       x-stoplight:
-        id: 5ayq9np28suha
+        id: xzmv2r25ofrws
     post:
       summary: Create New Deployment
       tags: []
       responses: {}
       operationId: post-api-v1-deployment
       x-stoplight:
-        id: 01ojfeohs08uq
+        id: dn1ywr6oxw7qq
   '/api/v1/deployment/{deploymentId}':
     parameters:
       - schema:
@@ -310,21 +404,21 @@ paths:
       responses: {}
       operationId: put-api-v1-deployment-deploymentId
       x-stoplight:
-        id: b15v9tu8ga0o1
+        id: 49ua7rpd3f6h9
     delete:
       summary: Delete Deployment by Deployment ID
       tags: []
       responses: {}
       operationId: delete-api-v1-deployment-deploymentId
       x-stoplight:
-        id: f5s7pd5q6zxn5
+        id: 6jn27rktit79m
     get:
       summary: Get Deployment details by Deployment ID
       tags: []
       responses: {}
       operationId: get-api-v1-deployment-deploymentId
       x-stoplight:
-        id: wjz4081p5rkjc
+        id: b5xrfk5dqkzsv
   /api/v1/lookup:
     get:
       summary: Get All Lookups
@@ -332,14 +426,14 @@ paths:
       responses: {}
       operationId: get-api-v1-lookup
       x-stoplight:
-        id: iay8ylzkxi6md
+        id: csj6h5oyuf16q
     post:
       summary: Create New Lookup
       tags: []
       responses: {}
       operationId: post-api-v1-lookup
       x-stoplight:
-        id: mgnqf1nkdx49d
+        id: d5nu87hswxgn2
   '/api/v1/lookup/{lookupId}':
     parameters:
       - schema:
@@ -353,21 +447,21 @@ paths:
       responses: {}
       operationId: get-api-v1-lookup-lookupId
       x-stoplight:
-        id: kbn70nlsx6fp8
+        id: ay8xxi5389dgj
     put:
       summary: Edit Lookup by Lookup ID
       tags: []
       responses: {}
       operationId: put-api-v1-lookup-lookupId
       x-stoplight:
-        id: gm9dc75sst37d
+        id: 17458wf8uz2wj
     delete:
       summary: Delete Lookup by Lookup ID
       tags: []
       responses: {}
       operationId: delete-api-v1-lookup-lookupId
       x-stoplight:
-        id: 6n7bf95ofetcg
+        id: t02f5dif6ahp1
 components:
   schemas:
     Tenant:
@@ -383,7 +477,7 @@ components:
           createdBy: User
           createDate: '2024-01-24'
       x-stoplight:
-        id: vtzvyc8ncn6gp
+        id: ipx6lskcrowjn
       required:
         - companyName
         - country
@@ -395,40 +489,40 @@ components:
           type: integer
           description: Unique identifier for the given Tenant.
           x-stoplight:
-            id: qzwx9alvpuqtb
+            id: oiswisjj3bq6g
         companyName:
           type: string
           x-stoplight:
-            id: k35mthcijhft6
+            id: svsk5p76mrmbi
         country:
           type: string
           x-stoplight:
-            id: 03g8fxtzofh03
+            id: a1q6gqo7ems8d
         state:
           type: string
           x-stoplight:
-            id: rqeipj9cv4gmg
+            id: wnf9faazyxnwy
         city:
           type: string
           example: '1997-10-31'
           x-stoplight:
-            id: wylu5ctldnomy
+            id: lyay4fhpdgsgy
         subscriptionType:
           type: string
           x-stoplight:
-            id: a9sxnhqdpzfry
+            id: qrlvy6tpox507
           description: Lookup needs to create
         createdBy:
           type: string
           x-stoplight:
-            id: wbxy8v1ixr78s
+            id: yrh2qf4solg0w
           description: the user was created.
         createDate:
           type: string
           format: date
           description: The date that the user was created.
           x-stoplight:
-            id: rx37izpk2dng0
+            id: ppykg94ahe9wr
     TenantUser:
       title: TenantUser
       type: object
@@ -442,7 +536,7 @@ components:
           createdBy: User
           createDate: '2024-01-24'
       x-stoplight:
-        id: gn6quuruogowt
+        id: 4avkebtdsoj7c
       required:
         - tenantMasterId
         - firstName
@@ -454,42 +548,42 @@ components:
           type: integer
           description: Unique identifier for the given user.
           x-stoplight:
-            id: tcbh0swztl6gw
+            id: 8po9srrwibzw3
         tenantMasterId:
           type: integer
           x-stoplight:
-            id: 8bke1aih67yoh
+            id: aj6ea3zdq1svu
         firstName:
           type: string
           x-stoplight:
-            id: gxaxzd34i6kr8
+            id: c2d8ffankft3s
         lastName:
           type: string
           format: date
           example: '1997-10-31'
           x-stoplight:
-            id: c0xt33lk6erzu
+            id: zd5g7jzgfcg17
         email:
           type: string
           format: email
           x-stoplight:
-            id: v2mlsjbglu3b1
+            id: hq9imfm4gtc54
         userRole:
           type: string
           description: Lookup needs to create
           x-stoplight:
-            id: xanj6zz0wq13c
+            id: veu739qng2hd2
         createdBy:
           type: string
           x-stoplight:
-            id: 4rl2omprnfq3a
+            id: urd4p5zi6joqz
           description: the user was created.
         createDate:
           type: string
           format: date
           description: The date that the user was created.
           x-stoplight:
-            id: kb8hu21p8m2uh
+            id: 7us82ha30e5fx
     TenantResources:
       title: TenantResources
       type: object
@@ -504,7 +598,7 @@ components:
           createdBy: User
           createDate: '2024-01-24'
       x-stoplight:
-        id: hkkgz7okzlsv8
+        id: vwu48uy4rjllo
       required:
         - deploymentId
         - resourceName
@@ -518,62 +612,69 @@ components:
           type: integer
           description: Unique identifier for the resource.
           x-stoplight:
-            id: xenvfq5ti0pox
+            id: vvv37vfn9i1q8
         deploymentId:
           type: integer
           x-stoplight:
-            id: 2ax4zr4tgnyk0
+            id: iox5ey7883z03
         resourceName:
           type: string
           x-stoplight:
-            id: 5ttj0frn0fxwn
+            id: k4ryrlhnqss54
         resourceType:
           type: string
           x-stoplight:
-            id: 6k1lg6bgs2rdj
+            id: j54hqcfbxcvwv
         resourceLocation:
           type: string
           x-stoplight:
-            id: jhjrehi7u19ak
+            id: r18a1khk7i1wx
         resourceGroup:
           type: string
           example: '1997-10-31'
           x-stoplight:
-            id: nst6xpk5o9gx9
+            id: 27pzg9npkzbnw
         subcription:
           type: string
           x-stoplight:
-            id: kg0oq7b9zyx07
+            id: 54hhh5k9tjac2
         TenantUserEnvironmentId:
           type: integer
           x-stoplight:
-            id: 7gdycs2vkxa12
+            id: o1f2a53kr5pg9
         createdBy:
           type: string
           x-stoplight:
-            id: rpsz22iqj91cg
+            id: t64r5h8db3t4q
           description: the user was created.
         createDate:
           type: string
           format: date
           description: The date that the user was created.
           x-stoplight:
-            id: biaq8pbj0qs39
+            id: vk7e9qqtid8hs
     TenantDeployment:
       title: TenantDeployment
       type: object
       examples:
-        - deploymentId: 12
-          tenantMasterId: '13'
-          deploymentName: BMW Germany Deployment
-          sourceVersion: Znode10x
-          environment: UAT
+        - tenantDeploymentId: 1
+          deploymentId: 12
+          tenantMasterId: 13
+          environment: 1
           status: Sucess
+          detailStatus: Detailed Status
           deploymentDateTime: '2019-08-24 12:00:PM'
           createdBy: User
           createDate: '2024-01-24'
       x-stoplight:
-        id: gug5uusyz2ssa
+        id: k2dphcdqcervt
+      required:
+        - deploymentId
+        - tenantMasterId
+        - environment
+        - status
+        - deploymentDateTime
+        - createdBy
       properties:
         tenantDeploymentId:
           type: integer
@@ -582,71 +683,65 @@ components:
           type: integer
           description: deploymentId from deployment table
           x-stoplight:
-            id: 8gui5kcty0h2g
+            id: 8gsii6b6wfz9j
         tenantMasterId:
           type: integer
           x-stoplight:
-            id: zq5x2j76jr0m8
+            id: hcfdaob6qd5qh
           description: tenantMasterId From tenant Table
-        deploymentName:
-          type: string
-          x-stoplight:
-            id: j6scnqo6dv0ed
-        sourceVersion:
-          type: string
-          x-stoplight:
-            id: duazpojkyh5kd
-          description: Lookup needs to create
         environment:
-          type: string
+          type: integer
           x-stoplight:
-            id: y38pi5qvt0ach
-          description: Lookup needs to create
+            id: 6u1wblmq6w331
+          description: environment id from lookup table type "environment"
         status:
           type: string
           x-stoplight:
-            id: ks3sqe51io1ly
+            id: sxu9zoeoeou3s
+        detailStatus:
+          type: string
+          x-stoplight:
+            id: bk8fy50e2jyfw
         deploymentDateTime:
           type: string
           format: date
           example: '1997-10-31'
           x-stoplight:
-            id: 4rfqi2ijv6hkw
+            id: p6916meusutvu
         createdBy:
           type: string
           description: the user was created.
           x-stoplight:
-            id: zk3k8bv537wge
+            id: x9xvuayytwco0
         createDate:
           type: string
           format: date
           description: The date that the deployment was created.
           x-stoplight:
-            id: xmyuohd004md1
-      required:
-        - deploymentId
-        - tenantMasterId
-        - deploymentName
-        - sourceVersion
-        - environment
-        - status
-        - deploymentDateTime
-        - createdBy
+            id: rnv1bk2ckjr18
+      description: ''
     TenantPatches:
       title: TenantPatches
       type: object
       examples:
-        - patchId: 13
-          tenantMasterId: '13'
-          patchName: BMW Germany Znode10x Patch
-          sourceVersion: Znode10x 1201
-          environment: UAT
+        - tenantPatchId: 1
+          patchId: 12
+          tenantMasterId: 13
+          environment: '1'
           status: Sucess
-          patchDateTime: '2019-08-24 12:00:PM'
+          detailStatus: Detailed Status
+          deploymentDateTime: '2019-08-24 12:00:PM'
           createdBy: User
           createDate: '2024-01-24'
       x-stoplight:
-        id: 241ic262y3p1u
+        id: i03u3twj68lz5
+      required:
+        - patchId
+        - tenantMasterId
+        - environment
+        - status
+        - patchDateTime
+        - createdBy
       properties:
         tenantPatchId:
           type: integer
@@ -654,224 +749,213 @@ components:
         patchId:
           type: integer
           x-stoplight:
-            id: mmxe2xeu4tvto
+            id: 7c4zxwwu2cmo5
           description: patchId from Patches table
         tenantMasterId:
           type: integer
           x-stoplight:
-            id: ngeg7m4eqemw8
+            id: s0opydnhcsr60
           description: tenantMasterId from Tenant Table
-        patchName:
-          type: string
-          x-stoplight:
-            id: 8l0tugscsupgc
-        sourceVersion:
-          type: string
-          x-stoplight:
-            id: bntvnh7h3jh1t
         environment:
-          type: string
-          example: '1997-10-31'
+          type: integer
           x-stoplight:
-            id: ql8fvrsqm9qds
+            id: 5hs9oafyyd4fz
+          description: environment id from lookup table type "environment"
         status:
           type: string
           x-stoplight:
-            id: 8erm83lbcczb3
+            id: ppphej87s02ty
+        detailStatus:
+          type: string
+          x-stoplight:
+            id: 0efdr6e2ttslj
         patchDateTime:
           type: string
           format: date
           x-stoplight:
-            id: 19mayzehnzwwe
+            id: kmwlu7rda680p
         createdBy:
           type: string
           description: The user created patch.
           x-stoplight:
-            id: vfofzyln6idkv
+            id: vo9d9dq38v9y4
         createDate:
           type: string
           x-stoplight:
-            id: 4rdn1b3n6xtrr
+            id: 0snnd9yioh4gp
           format: date
           description: The date that the patch was created.
-      required:
-        - patchId
-        - tenantMasterId
-        - patchName
-        - sourceVersion
-        - environment
-        - status
-        - patchDateTime
-        - createdBy
     Deployment:
       title: Deployment
       type: object
       examples:
         - deploymentId: 12
-          tenantMasterId: '13'
           deploymentName: BMW Germany Deployment
-          sourceVersion: Znode10x
-          environment: UAT
+          product: 1
+          productVersion: 2
+          sourceVersion: Znode10x 1201
+          sourcePath: 'https://github.com/govindarajulu-naidu-amla/DevAuto/'
           status: Sucess
           deploymentDateTime: '2019-08-24 12:00:PM'
           createdBy: User
           createDate: '2024-01-24'
       x-stoplight:
-        id: 6w9mjrga5kwsw
+        id: dsfex9kbmprsl
+      required:
+        - deploymentName
+        - product
+        - productVersion
+        - sourcePath
+        - sourceVersion
+        - createdBy
       properties:
         deploymentId:
           type: integer
           description: Unique identifier for the given deployment.
           x-stoplight:
-            id: 12nefzkccku6e
+            id: iesqhyvd7cvtt
         deploymentName:
           type: string
           x-stoplight:
-            id: e13t0vbru31un
+            id: hbh9hmkwbyhpb
+        product:
+          type: integer
+          x-stoplight:
+            id: 0nahbqsttr04j
+          description: Product from lookup table type "product"
+        productVersion:
+          type: integer
+          x-stoplight:
+            id: 7q15by5gb9sf1
+          description: Product Version from lookup table by type "ProductVersion"
+        sourcePath:
+          type: string
+          x-stoplight:
+            id: 796wdqc2rhxw4
         sourceVersion:
           type: string
           x-stoplight:
-            id: envk5y5ghmiav
+            id: sxwckhh06vy8c
           description: Lookup needs to create
-        environment:
-          type: string
-          x-stoplight:
-            id: 6vq5lt38hypcd
-          description: Lookup needs to create
-        status:
-          type: string
-          x-stoplight:
-            id: 7xw11tw9w4sbh
         createdBy:
           type: string
           description: the user was created.
           x-stoplight:
-            id: 7wux78dcx8znf
+            id: 8oe11nsrhfty1
         createDate:
           type: string
           format: date
           description: The date that the deployment was created.
           x-stoplight:
-            id: q8d0q6459mgh7
-      required:
-        - deploymentName
-        - sourceVersion
-        - environment
-        - status
-        - createdBy
+            id: 88m5eudhym4t2
     Patches:
       title: Patches
       type: object
       examples:
-        - patchId: 13
-          tenantMasterId: '13'
-          patchName: BMW Germany Znode10x Patch
-          sourceVersion: Znode10x 1201
-          environment: UAT
-          status: Sucess
-          patchDateTime: '2019-08-24 12:00:PM'
+        - patchId: 12
+          patchName: BMW Germany Patch
+          product: 1
+          productVersion: 3
+          sourceVersion: Znode10x Patch 120124
+          sourcePath: 'https://github.com/govindarajulu-naidu-amla/DevAuto/'
           createdBy: User
           createDate: '2024-01-24'
       x-stoplight:
-        id: tnx6q669iizvj
+        id: 47a2id7ttr0qc
+      required:
+        - patchName
+        - product
+        - productVersion
+        - sourceVersion
+        - createdBy
       properties:
         patchId:
           type: integer
           description: Unique identifier for the given patch.
           x-stoplight:
-            id: uii8x1n0m0mma
+            id: xdawuxt58lorn
         patchName:
           type: string
           x-stoplight:
-            id: fn9pf6qeam85h
+            id: af3ifn65c5z9l
+        product:
+          type: integer
+          x-stoplight:
+            id: 5oufc6uswht46
+          description: Product from lookup table type "product"
+        productVersion:
+          type: integer
+          x-stoplight:
+            id: 9lfq1r520ud2r
+          description: Product Version from lookup table by type "ProductVersion"
+        sourcePath:
+          type: string
+          x-stoplight:
+            id: a18333w1f6l7i
         sourceVersion:
           type: string
           x-stoplight:
-            id: nbkw9om4sxvdu
-        environment:
-          type: string
-          example: '1997-10-31'
-          x-stoplight:
-            id: ww3bir9bydkl6
+            id: lk894rp9pvtpy
         createdBy:
           type: string
           description: The user created patch.
           x-stoplight:
-            id: ryppxy6ymsm0r
+            id: 2bnubvr8p2oyt
         createDate:
           type: string
           x-stoplight:
-            id: kd7srved0lsx0
+            id: nbvwyqnt83neu
           format: date
           description: The date that the patch was created.
-      required:
-        - patchName
-        - sourceVersion
-        - environment
-        - createdBy
     Lookup:
       title: Lookup
       type: object
       examples:
-        - patchId: 13
-          tenantMasterId: '13'
-          patchName: BMW Germany Znode10x Patch
-          sourceVersion: Znode10x 1201
-          environment: UAT
+        - lookupId: 13
+          lookupName: Znode 10x
+          lookupValue: '1'
+          lookupType: ProductType
           status: Sucess
-          patchDateTime: '2019-08-24 12:00:PM'
           createdBy: User
           createDate: '2024-01-24'
       x-stoplight:
-        id: zw0ot27poojo7
-      required:
-        - tenantMasterId
-        - patchName
-        - sourceVersion
-        - environment
-        - status
-        - patchDateTime
-        - createdBy
+        id: gbuwdald05g94
       properties:
-        patchId:
+        lookupId:
           type: integer
           description: Unique identifier for the given patch.
           x-stoplight:
-            id: fl9r87osouvzt
-        tenantMasterId:
-          type: integer
-          x-stoplight:
-            id: agsroldxqdr08
-        patchName:
+            id: 83xin63w0jd2w
+        lookupName:
           type: string
           x-stoplight:
-            id: o5lpqk3ds569w
-        sourceVersion:
+            id: 1gdpagpa8k081
+        lookupValue:
           type: string
           x-stoplight:
-            id: 0hjxebvzk3pfm
-        environment:
+            id: kvkvktwgrdml6
+        lookupType:
           type: string
-          example: '1997-10-31'
           x-stoplight:
-            id: reeywsxufzyzp
+            id: 0rtv2g3yyquk0
         status:
           type: string
           x-stoplight:
-            id: 73q0o8jf8ibov
-        patchDateTime:
-          type: string
-          format: date
-          x-stoplight:
-            id: md8d36yzffpjl
+            id: 2iwceiueuf19q
         createdBy:
           type: string
           description: The user created patch.
           x-stoplight:
-            id: vvgqe506ev587
+            id: 72knj5zrjh6dy
         createDate:
           type: string
           x-stoplight:
-            id: 0ciekw4bjiakx
+            id: wavq4fk8b1vdq
           format: date
           description: The date that the patch was created.
+      required:
+        - lookupName
+        - lookupValue
+        - lookupType
+        - status
+        - createdBy
