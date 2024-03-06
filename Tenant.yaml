@@ -337,17 +337,36 @@ paths:
     get:
       summary: Get All Patches
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patches'
+        '404':
+          description: Not Found
       operationId: get-api-v1-patch
       x-stoplight:
         id: x0blj7kl7lnz6
+      description: Get All Patches
     post:
       summary: Create New Patch
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
       operationId: post-api-v1-patch
       x-stoplight:
         id: vbt1gtyz7do67
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patches'
+      description: Create New Patch
   '/api/v1/patch/{patchid}':
     parameters:
       - schema:
@@ -358,39 +377,88 @@ paths:
     put:
       summary: Edit Patch by Patch ID
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
       operationId: put-api-v1-patch-patchid
       x-stoplight:
         id: aws6wkbsdewst
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patches'
+      description: Edit Patch by Patch ID
     delete:
       summary: Delete Patch by Patch ID
       tags: []
-      responses: {}
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
       operationId: delete-api-v1-patch-patchid
       x-stoplight:
         id: 0s7ntxn8nx3ul
+      description: Delete Patch by Patch ID
     get:
       summary: Get Patch details by Patch ID
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patches'
+        '404':
+          description: Not Found
       operationId: get-api-v1-patch-patchid
       x-stoplight:
         id: 5x43bxitouidg
+      description: Get Patch details by Patch ID
   /api/v1/deployment:
     get:
       summary: Get All Deployment
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+        '404':
+          description: Not Found
       operationId: get-api-v1-deployment
       x-stoplight:
         id: xzmv2r25ofrws
+      description: Get All Deployment
     post:
       summary: Create New Deployment
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
       operationId: post-api-v1-deployment
       x-stoplight:
         id: dn1ywr6oxw7qq
+      description: Create New Deployment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Deployment'
   '/api/v1/deployment/{deploymentId}':
     parameters:
       - schema:
@@ -401,39 +469,88 @@ paths:
     put:
       summary: Edit Deployment by Deployment ID
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
       operationId: put-api-v1-deployment-deploymentId
       x-stoplight:
         id: 49ua7rpd3f6h9
+      description: Edit Deployment by Deployment ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Deployment'
     delete:
       summary: Delete Deployment by Deployment ID
       tags: []
-      responses: {}
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
       operationId: delete-api-v1-deployment-deploymentId
       x-stoplight:
         id: 6jn27rktit79m
+      description: Delete Deployment by Deployment ID
     get:
       summary: Get Deployment details by Deployment ID
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+        '404':
+          description: Not Found
       operationId: get-api-v1-deployment-deploymentId
       x-stoplight:
         id: b5xrfk5dqkzsv
+      description: Get Deployment details by Deployment ID
   /api/v1/lookup:
     get:
       summary: Get All Lookups
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lookup'
+        '404':
+          description: Not Found
       operationId: get-api-v1-lookup
       x-stoplight:
         id: csj6h5oyuf16q
+      description: Get All Lookups
     post:
       summary: Create New Lookup
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
       operationId: post-api-v1-lookup
       x-stoplight:
         id: d5nu87hswxgn2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lookup'
+      description: Create New Lookup
   '/api/v1/lookup/{lookupId}':
     parameters:
       - schema:
@@ -444,24 +561,52 @@ paths:
     get:
       summary: Get Lookup details by Lookup ID
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lookup'
+        '404':
+          description: Not Found
       operationId: get-api-v1-lookup-lookupId
       x-stoplight:
         id: ay8xxi5389dgj
+      description: Get Lookup details by Lookup ID
     put:
       summary: Edit Lookup by Lookup ID
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
       operationId: put-api-v1-lookup-lookupId
       x-stoplight:
         id: 17458wf8uz2wj
+      description: Edit Lookup by Lookup ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lookup'
     delete:
       summary: Delete Lookup by Lookup ID
       tags: []
-      responses: {}
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
       operationId: delete-api-v1-lookup-lookupId
       x-stoplight:
         id: t02f5dif6ahp1
+      description: Delete Lookup by Lookup ID
 components:
   schemas:
     Tenant:
